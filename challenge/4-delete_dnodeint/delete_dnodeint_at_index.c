@@ -2,12 +2,13 @@
 #include <stdlib.h>
 
 /**
- * delete_dnodeint_at_index - Delete a node at a specific index from a list
+ * delete_dnodeint_at_index - Function to delete a node at a specific index
  *
- * @head: A pointer to the first element of a list
- * @index: The index of the node to delete
  *
- * Return: 1 on success, -1 on failure
+ * @head: Pointer to the head of the list
+ * @index: Index of the node to delete
+ *
+ * Return: 1 if successful, -1 if it fails
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
@@ -37,12 +38,15 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 	if (current == NULL)
 		return (-1);
 
-	/* Mise à jour des liens */
-	if (current->next != NULL)
-		current->next->prev = current->prev;
-
-	if (current->prev != NULL)
+	/* Suppression du dernier nœud */
+	if (current->next == NULL)
+		current->prev->next = NULL;
+	else
+	{
+		/* Mise à jour des liens pour un nœud intermédiaire */
 		current->prev->next = current->next;
+		current->next->prev = current->prev;
+	}
 
 	free(current);
 	return (1);
