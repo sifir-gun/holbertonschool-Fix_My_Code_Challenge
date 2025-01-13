@@ -2,13 +2,11 @@
 #include <stdlib.h>
 
 /**
- * delete_dnodeint_at_index - Function to delete a node at a specific index
- *
- *
+ * delete_dnodeint_at_index - Deletes the node at index in a doubly linked list
  * @head: Pointer to the head of the list
- * @index: Index of the node to delete
+ * @index: Index of the node to delete (starting from 0)
  *
- * Return: 1 if successful, -1 if it fails
+ * Return: 1 if success, -1 if failure
  */
 int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 {
@@ -20,7 +18,7 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 
 	current = *head;
 
-	/* Suppression du premier nœud */
+	/* Case 1: Deleting the head node */
 	if (index == 0)
 	{
 		*head = current->next;
@@ -30,23 +28,18 @@ int delete_dnodeint_at_index(dlistint_t **head, unsigned int index)
 		return (1);
 	}
 
-	/* Parcours jusqu'à l'index */
+	/* Case 2: Traverse to find the node at position 'index' */
 	for (i = 0; current != NULL && i < index; i++)
 		current = current->next;
 
-	/* Si l'index est hors limites */
 	if (current == NULL)
 		return (-1);
 
-	/* Suppression du dernier nœud */
-	if (current->next == NULL)
-		current->prev->next = NULL;
-	else
-	{
-		/* Mise à jour des liens pour un nœud intermédiaire */
-		current->prev->next = current->next;
+	/* Update the links around 'current' */
+	if (current->next != NULL)
 		current->next->prev = current->prev;
-	}
+	if (current->prev != NULL)
+		current->prev->next = current->next;
 
 	free(current);
 	return (1);
